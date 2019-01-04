@@ -17,7 +17,7 @@ from scripts.dataset import Dataset
 from scripts.utils import query_input
 
 # warn user of long script run...
-q = query_input('[Warning] This script can be a bit long to run. Continue ?')
+q = query_input('[Warning] This script can be a bit long to run. Continue?')
 if not q: exit()
 
 # load data:
@@ -28,18 +28,38 @@ dataset = Dataset('covtype.data', debug=True)
 train_data, train_labels = dataset.train(split=True)
 test_data, test_labels = dataset.test(split=True)
 
+# MODIFY feature: make "Hillshade_9am", "Hillshade_Noon" and
+# "Hillshade_3pm" categorical (with specific thresholds)
+# ----------------------------------------------------------
+train_data['Hill_9bin'] = train_data['Hillshade_9am'] > 175
+test_data['Hill_9bin'] = test_data['Hillshade_9am'] > 175
+train_data['Hill_12bin'] = train_data['Hillshade_Noon'] > 200
+test_data['Hill_12bin'] = test_data['Hillshade_Noon'] > 200
+train_data['Hill_3bin'] = train_data['Hillshade_3pm'] > 150
+test_data['Hill_3bin'] = test_data['Hillshade_3pm'] > 150
+# + remove old features
+train_data.drop(columns=['Hillshade_9am', 'Hillshade_Noon', 'Hillshade_3pm'], inplace=True)
+test_data.drop(columns=['Hillshade_9am', 'Hillshade_Noon', 'Hillshade_3pm'], inplace=True)
+
+train_data['Hill_9bin'] = train_data['Hill_9bin'].astype('category')
+train_data['Hill_12bin'] = train_data['Hill_12bin'].astype('category')
+train_data['Hill_3bin'] = train_data['Hill_3bin'].astype('category')
+test_data['Hill_9bin'] = test_data['Hill_9bin'].astype('category')
+test_data['Hill_12bin'] = test_data['Hill_12bin'].astype('category')
+test_data['Hill_3bin'] = test_data['Hill_3bin'].astype('category')
+
 # set the parameters to tune
 tuned_parameters = { 
-    'n_estimators': [100, 200, 500],
+    'n_estimators': [30, 50, 80],
     'max_features': ['auto', None, 'log2'],
     'criterion' : ['gini', 'entropy']
 }
 
 # run Grid Search
 k = 5
-print('Tuning hyper-parameters (with {}-fold cross-validation)\n'.format(k))
+print('Tuning hyper-parameters (with {}-fold cross-validation).\n'.format(k))
 
-clf = GridSearchCV(RandomForestClassifier(), tuned_parameters, cv=k, verbose=1,
+clf = GridSearchCV(RandomForestClassifier(), tuned_parameters, cv=k, verbose=2,
                    n_jobs=4)
 clf.fit(train_data, train_labels)
 
