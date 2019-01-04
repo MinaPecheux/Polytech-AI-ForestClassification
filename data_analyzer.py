@@ -4,8 +4,8 @@
 # data_analyzer.py - Basic script to load, display and (grossly) analyze the
 #                    project's dataset
 # ==============================================================================
-from dataset import Dataset
-from displayer import Displayer
+from scripts.dataset import Dataset
+from scripts.displayer import Displayer
 
 # load data:
 # - without balancing

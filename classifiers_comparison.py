@@ -16,9 +16,9 @@ from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 
 from sklearn.model_selection import cross_val_score
 
-import extractor
-from dataset import Dataset
-from utils import query_input
+import scripts.extractor as extr
+from scripts.dataset import Dataset
+from scripts.utils import query_input
 
 # warn user of long script run...
 q = query_input('[Warning] This script can be a bit long to run. Continue ?')
@@ -28,7 +28,7 @@ if not q: exit()
 # - with balancing using under- and over-sampling
 # - only keeping numerical features (for classifiers like the KNN)
 dataset = Dataset('covtype.data', debug=True,
-    autobalance='both', extractor={'func': extractor.only_numerical})
+    autobalance='both', extractor={'func': extr.only_numerical})
 
 # define classifiers to test
 classifiers = [

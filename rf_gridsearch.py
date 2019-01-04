@@ -13,8 +13,8 @@ from sklearn.model_selection import cross_val_score, GridSearchCV
 from sklearn.metrics import classification_report
 from sklearn.ensemble import RandomForestClassifier
 
-from dataset import Dataset
-from utils import query_input
+from scripts.dataset import Dataset
+from scripts.utils import query_input
 
 # warn user of long script run...
 q = query_input('[Warning] This script can be a bit long to run. Continue ?')
