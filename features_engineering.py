@@ -8,6 +8,7 @@
 import numpy as np
 
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import balanced_accuracy_score
 
 from scripts.dataset import Dataset
 from scripts.displayer import Displayer
@@ -151,12 +152,14 @@ print(train_data.dtypes)
 
 # compute and print classification results
 n = 10
-print('\nEvaluating model\'s accuracy (RFC with n={} estimators).'.format(n))
-print('-------------------------------------------------------')
-clf_dt = RandomForestClassifier(n_estimators=n)
-clf_dt.fit(train_data, train_labels)
-score = clf_dt.score(test_data, test_labels)
-feat_imps = clf_dt.feature_importances_
+print('\nEvaluating model\'s balanced accuracy (RFC with n={} estimators).'.format(n))
+print('----------------------------------------------------------------')
+clf = RandomForestClassifier(n_estimators=n)
+clf.fit(train_data, train_labels)
+y_pred = clf.predict(test_data)
+y_true = test_labels
+score = balanced_accuracy_score(y_true, y_pred)
+feat_imps = clf.feature_importances_
 
 print('Score: {}% ({})'.format(int(round(100.*score)), score))
 print('\nFeatures importance:\n')
