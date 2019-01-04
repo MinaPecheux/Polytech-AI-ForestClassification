@@ -7,7 +7,8 @@ After analyzing the dataset, I decided to focus on Decision Trees and Random For
 
 ## Some info about the repository
 Here, you will find various scripts:
-- the `scripts` folder provides useful classes and methods to load, shuffle, balance, analyze and display data
+- the `scripts/` folder provides useful classes and methods to load, shuffle, balance, analyze and display data
+- the `outputs/` folder contains some plots that show relevant information about the project's dataset; they were generated thanks to the `Displayer` class I wrote (the `data_analyzer.py` below shows how to use it to generate these plots)
 - the other files are small examples of basic usage of scikit-learn's algorithms and of these custom objects, and their application to the project's dataset:
   - `data_analyzer.py` loads the dataset and provides some basic info about it, plus it plots common graphs that are useful for data analysis: the correlation matrix, the piechart of the class repartition, boxplots, histograms...
   - `classifiers_comparison.py` is an early trial at classifying this dataset; in this file, I compared the results of several common classifiers of the scikit-learn library to get a first feeling of the next steps
