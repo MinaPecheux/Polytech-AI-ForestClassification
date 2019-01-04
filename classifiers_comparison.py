@@ -21,7 +21,7 @@ from scripts.dataset import Dataset
 from scripts.utils import query_input
 
 # warn user of long script run...
-q = query_input('[Warning] This script can be a bit long to run. Continue ?')
+q = query_input('[Warning] This script can be a bit long to run. Continue?')
 if not q: exit()
 
 # load data:
