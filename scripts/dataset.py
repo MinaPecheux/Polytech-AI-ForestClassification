@@ -10,7 +10,6 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import KFold
 from imblearn.over_sampling import SMOTE
-from imblearn.combine import SMOTETomek
 
 from .extractor import base as extractor_base
 
