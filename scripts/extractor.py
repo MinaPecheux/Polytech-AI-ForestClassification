@@ -9,7 +9,28 @@ import numpy as np
 import pandas as pd
 
 def base(data, refs, one_hot=False):
-    """Reads basically (numerical or categorical) + Converts dummies to categorical"""
+    """Loads data into a Pandas DataFrame by directly setting numerical data and
+    (optionally) converting one-hot categorical (or dummies) to integer
+    categorical.
+    
+    WARNING: even though categorical data is (potentially) converted, columns of
+    the Pandas DataFrame are not set as 'categorical'. This must be done in your
+    script after loading to insure a correct treatment of the dataset by ML
+    algorithms!
+    
+    Parameters
+    ----------
+    data : numpy.ndarray
+        Data to load.
+    refs : list(str or list(str, int))
+        Feature names: if it is a string, the feature is numerical; otherwise if
+        it is a list of string and int, the feature is categorical (the string
+        is the name of the feature and the int is the number of one-hot columns,
+        i.e. categorical levels, to consider).
+    one-hot : bool, optional
+        If true, data is left as is. If false (by default), one-hot values are
+        converted to integer categorical variables.
+    """
     p        = 0
     features = []
     fnames   = []
@@ -37,15 +58,20 @@ def base(data, refs, one_hot=False):
                 features.append(pd.Series(np.int_(dcols)[np.where(d != 0)[1]]))
                 p    += n
     df = pd.DataFrame(np.asarray(features).T, columns=fnames)
-    # if one_hot:
-    #     for c in cats: df[c] = df[c].astype('bool')
-    # else:
-    #     for c in cats: df[c] = df[c].astype('category')
-    # for c in cats: df[c] = df[c].astype('category')
     return df
 
 def only_numerical(data, refs):
-    """Only returns numerical features (drops categorical completely)"""
+    """Loads data into a Pandas DataFrame by only keeping numerical variables
+    (categorical features are dropped).
+    
+    Parameters
+    ----------
+    data : numpy.ndarray
+        Data to load.
+    refs : list(str or list(str, int))
+        Feature names: if it is a string, the feature is numerical; otherwise if
+        it is a list of string and int, the feature is categorical and is ignored.
+    """
     p        = 0
     features = []
     fnames   = []
@@ -57,7 +83,21 @@ def only_numerical(data, refs):
     return pd.DataFrame(np.asarray(features).T, columns=fnames)
 
 def to_categorical(data, refs, **kwargs):
-    """Converts to only categorical (with thresholds)"""
+    """Loads data into a Pandas DataFrame by converting numerical features to
+    categorical bins. If a list of thresholds is passed in for each numerical
+    variable, they are used to partition the variables. Else, if an integer
+    value is passed, it is understood as the number of bins to create.
+    
+    Parameters
+    ----------
+    data : numpy.ndarray
+        Data to load.
+    refs : list(str or list(str, int))
+        Feature names: if it is a string, the feature is numerical; otherwise if
+        it is a list of string and int, the feature is categorical (the string
+        is the name of the feature and the int is the number of one-hot columns,
+        i.e. categorical levels, to consider).
+    """
     thresholds = kwargs.get('thresholds', 3)
     df         = base(data, refs)
     fnames     = []
