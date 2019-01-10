@@ -113,5 +113,6 @@ if run_pca:
 
     axes.set_xlim(-1,1)
     axes.set_ylim(-1,1)
+    plt.title('PCA Analysis - Variables graph')
     plt.show()
 
