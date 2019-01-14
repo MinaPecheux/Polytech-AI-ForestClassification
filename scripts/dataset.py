@@ -51,6 +51,14 @@ class Dataset(object):
         If true, data is shuffled before splitting in test/train sets. Otherwise,
         the beginning is used as train set and the rest as test set (according to
         the split ratio).
+    autobalance : str or None, optional
+        If not None, rebalancing method, among: 'undersampling' (drop samples
+        above a certain limit), 'bootstrapping', 'both' (mix of the two previous
+        methods).
+    name : str or None, optional
+        Specific debug name.
+    debug : bool, optional
+        If true, the Dataset instance logs its execution steps.
     """
     def __init__(self, filename, split_ratio=0.2, shuffle=True, extractor=None,
                  autobalance=None, name=None, debug=False):
